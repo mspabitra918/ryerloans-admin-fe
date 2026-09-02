@@ -1,0 +1,146 @@
+@import "tailwindcss";
+
+/*
+ * The admin portal is a dense, data-first surface used for hours at a time, so
+ * it takes its own palette rather than the marketing site's. Cooler neutrals,
+ * one accent, and status colour reserved for status — nothing decorative gets
+ * to compete with a red decline pill.
+ */
+:root {
+  --background: #f6f8fb;
+  --surface: #ffffff;
+  --surface-muted: #f1f5f9;
+  --border: #e2e8f0;
+  --foreground: #0f172a;
+  --foreground-muted: #64748b;
+  --accent: #0b6bcb;
+  --accent-strong: #08529c;
+  --accent-soft: #e6f0fb;
+  --danger: #be123c;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-border: var(--border);
+  --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0b1220;
+    --surface: #131c2e;
+    --surface-muted: #1b2537;
+    --border: #26324a;
+    --foreground: #e8eefb;
+    --foreground-muted: #94a3b8;
+    --accent: #4b9bf0;
+    --accent-strong: #6fb2f7;
+    --accent-soft: #16283f;
+    --danger: #fb7185;
+  }
+}
+
+html,
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+body {
+  font-family:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Tabular figures keep money columns aligned as values change width. */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+}
+
+.field {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--foreground);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  outline: none;
+}
+
+.field:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    opacity 120ms ease;
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--accent-strong);
+}
+
+.btn-secondary {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--foreground);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--surface-muted);
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: #ffffff;
+}
+
+/* Screen-reader-only, for labels a sighted user reads from context. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
