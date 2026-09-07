@@ -96,7 +96,9 @@ export function ActionModal({
 
     const value = values[field.name];
 
-    return Array.isArray(value) ? value.length > 0 : String(value ?? "").trim() !== "";
+    return Array.isArray(value)
+      ? value.length > 0
+      : String(value ?? "").trim() !== "";
   });
 
   const overrideSatisfied = sendEmail || overrideReason.trim().length >= 3;
@@ -115,20 +117,21 @@ export function ActionModal({
         ...Object.fromEntries(
           Object.entries(values)
             .filter(([, value]) =>
-              Array.isArray(value) ? value.length > 0 : String(value).trim() !== "",
+              Array.isArray(value)
+                ? value.length > 0
+                : String(value).trim() !== "",
             )
             .map(([key, value]) => {
               const field = fields.find((entry) => entry.name === key);
 
-              return [
-                key,
-                field?.type === "number" ? Number(value) : value,
-              ];
+              return [key, field?.type === "number" ? Number(value) : value];
             }),
         ),
         send_email: sendEmail,
         ...(sendEmail ? {} : { email_override_reason: overrideReason.trim() }),
-        ...(editEmail && subject.trim() ? { email_subject: subject.trim() } : {}),
+        ...(editEmail && subject.trim()
+          ? { email_subject: subject.trim() }
+          : {}),
         ...(editEmail && body.trim() ? { email_body: body.trim() } : {}),
         ...(note.trim() ? { note: note.trim() } : {}),
         ...(action.destructive
@@ -251,7 +254,9 @@ export function ActionModal({
                           setValues((current) => ({
                             ...current,
                             [field.name]: checked
-                              ? selected.filter((value) => value !== option.value)
+                              ? selected.filter(
+                                  (value) => value !== option.value,
+                                )
                               : [...selected, option.value],
                           }))
                         }
@@ -388,7 +393,7 @@ export function ActionModal({
           </div>
         ) : null}
 
-        <div>
+        {/* <div>
           <label htmlFor="action-note" className="mb-1 block text-sm font-medium">
             Internal note (optional)
           </label>
@@ -399,16 +404,20 @@ export function ActionModal({
             onChange={(event) => setNote(event.target.value)}
             placeholder="Recorded against the audit entry"
           />
-        </div>
+        </div> */}
 
         {/* ------------------------------------------- destructive confirm */}
         {action.destructive ? (
           <div className="rounded-lg bg-rose-50 p-3 ring-1 ring-rose-200">
             <p className="flex items-start gap-2 text-sm text-rose-800">
-              <AlertTriangle size={15} className="mt-0.5 shrink-0" aria-hidden />
+              <AlertTriangle
+                size={15}
+                className="mt-0.5 shrink-0"
+                aria-hidden
+              />
               This action cannot be undone. Type{" "}
-              <code className="font-mono font-semibold">{applicationId}</code> to
-              confirm.
+              <code className="font-mono font-semibold">{applicationId}</code>{" "}
+              to confirm.
             </p>
             <input
               className="field mt-2 font-mono"

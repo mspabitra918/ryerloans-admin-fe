@@ -620,7 +620,7 @@ function CreateUserModal({
           />
         </label>
 
-        <label className="block text-sm">
+        {/* <label className="block text-sm">
           <span className="mb-1 block text-xs text-[var(--foreground-muted)]">
             Login ID (optional)
           </span>
@@ -634,7 +634,7 @@ function CreateUserModal({
             value={loginId}
             onChange={(event) => setLoginId(event.target.value)}
           />
-        </label>
+        </label> */}
 
         <label className="block text-sm">
           <span className="mb-1 block text-xs text-[var(--foreground-muted)]">
