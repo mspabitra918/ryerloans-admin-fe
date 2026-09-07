@@ -226,6 +226,8 @@ export function DetailView({ applicationId }: { applicationId: string }) {
     message: string;
   }>;
 
+  console.log("DetailView: detail", detail?.loan_request?.amount_requested);
+
   return (
     <div className="space-y-4">
       <button
@@ -882,6 +884,11 @@ export function DetailView({ applicationId }: { applicationId: string }) {
       <ActionModal
         action={openAction}
         applicationId={applicationId}
+        approvedAmount={
+          typeof detail?.loan_request?.amount_requested === "number"
+            ? detail.loan_request.amount_requested
+            : undefined
+        }
         borrowerEmail={str(personal, "email") ?? ""}
         ecoaCodes={options?.ecoa_reason_codes ?? []}
         onClose={() => setOpenAction(null)}

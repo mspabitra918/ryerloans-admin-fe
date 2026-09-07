@@ -21,6 +21,7 @@ type FieldValue = string | string[];
 export function ActionModal({
   action,
   applicationId,
+  approvedAmount,
   borrowerEmail,
   ecoaCodes,
   onClose,
@@ -29,6 +30,7 @@ export function ActionModal({
   action: ActionDefinition | null;
   applicationId: string;
   borrowerEmail: string;
+  approvedAmount?: number | null;
   ecoaCodes: Array<{ code: string; label: string }>;
   onClose: () => void;
   onDone: () => void;
@@ -46,14 +48,40 @@ export function ActionModal({
 
   // Reset every time a different action opens, so state never bleeds between
   // an abandoned Approve and the Decline the admin opens next.
+  // useEffect(() => {
+  //   if (!action) return;
+
+  //   const defaults: Record<string, FieldValue> = {};
+
+  //   for (const field of action.fields ?? []) {
+  //     defaults[field.name] =
+  //       field.type === "checklist" ? [] : String(field.defaultValue ?? "");
+  //   }
+
+  //   setValues(defaults);
+  //   setSendEmail(true);
+  //   setOverrideReason("");
+  //   setEditEmail(false);
+  //   setSubject("");
+  //   setBody("");
+  //   setNote("");
+  //   setConfirmId("");
+  //   setError(null);
+  // }, [action]);
+
   useEffect(() => {
     if (!action) return;
 
     const defaults: Record<string, FieldValue> = {};
 
     for (const field of action.fields ?? []) {
-      defaults[field.name] =
-        field.type === "checklist" ? [] : String(field.defaultValue ?? "");
+      // Set approvedAmount for the fund action automatically
+      if (action.key === "fund" && field.name === "funded_amount") {
+        defaults[field.name] = String(approvedAmount ?? "");
+      } else {
+        defaults[field.name] =
+          field.type === "checklist" ? [] : String(field.defaultValue ?? "");
+      }
     }
 
     setValues(defaults);
@@ -65,7 +93,7 @@ export function ActionModal({
     setNote("");
     setConfirmId("");
     setError(null);
-  }, [action]);
+  }, [action, approvedAmount]); // <-- ADD approvedAmount TO DEPENDENCY ARRAY
 
   const fields = useMemo(() => {
     if (!action?.fields) return [];
@@ -221,7 +249,7 @@ export function ActionModal({
           </p>
         ) : null}
 
-        {fields.map((field) => (
+        {/* {fields.map((field) => (
           <div key={field.name}>
             <label
               htmlFor={`field-${field.name}`}
@@ -290,7 +318,90 @@ export function ActionModal({
               </p>
             ) : null}
           </div>
-        ))}
+        ))} */}
+
+        {fields.map((field) => {
+          const isFundAction =
+            action.key === "fund" && field.name === "funded_amount";
+
+          return (
+            <div key={field.name}>
+              <label
+                htmlFor={`field-${field.name}`}
+                className="mb-1 block text-sm font-medium"
+              >
+                {field.label}
+                {field.required && !isFundAction ? (
+                  <span className="text-rose-600" aria-hidden>
+                    {" *"}
+                  </span>
+                ) : null}
+              </label>
+
+              {/* READ-ONLY DISPLAY FOR FUND ACTION */}
+              {isFundAction ? (
+                <div className="rounded-lg border border-[var(--border)] bg-[var(--surface-muted)] px-3 py-2 text-sm font-semibold text-[var(--foreground)]">
+                  {values[field.name]
+                    ? `$${Number(values[field.name]).toLocaleString()}`
+                    : "—"}
+                </div>
+              ) : field.type === "checklist" ? (
+                <div className="max-h-52 space-y-1 overflow-y-auto rounded-lg border border-[var(--border)] p-2">
+                  {(field.options ?? []).map((option) => {
+                    const selected = (values[field.name] as string[]) ?? [];
+                    const checked = selected.includes(option.value);
+
+                    return (
+                      <label
+                        key={option.value}
+                        className="flex cursor-pointer items-start gap-2 rounded px-2 py-1 text-sm hover:bg-[var(--surface-muted)]"
+                      >
+                        <input
+                          type="checkbox"
+                          className="mt-0.5"
+                          checked={checked}
+                          onChange={() =>
+                            setValues((current) => ({
+                              ...current,
+                              [field.name]: checked
+                                ? selected.filter(
+                                    (value) => value !== option.value,
+                                  )
+                                : [...selected, option.value],
+                            }))
+                          }
+                        />
+                        {option.label}
+                      </label>
+                    );
+                  })}
+                </div>
+              ) : (
+                <input
+                  id={`field-${field.name}`}
+                  className="field"
+                  type={field.type === "number" ? "number" : "text"}
+                  min={field.min}
+                  max={field.max}
+                  step={field.step}
+                  value={String(values[field.name] ?? "")}
+                  onChange={(event) =>
+                    setValues((current) => ({
+                      ...current,
+                      [field.name]: event.target.value,
+                    }))
+                  }
+                />
+              )}
+
+              {field.hint ? (
+                <p className="mt-1 text-xs text-[var(--foreground-muted)]">
+                  {field.hint}
+                </p>
+              ) : null}
+            </div>
+          );
+        })}
 
         {/* ---------------------------------------------------- email panel */}
         {action.emailTemplate ? (
