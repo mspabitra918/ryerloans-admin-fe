@@ -320,7 +320,7 @@ export function ActionModal({
                 </div>
               </div>
 
-              <label className="flex shrink-0 items-center gap-1.5 text-xs">
+              {/* <label className="flex shrink-0 items-center gap-1.5 text-xs">
                 <input
                   type="checkbox"
                   checked={!sendEmail}
@@ -330,10 +330,10 @@ export function ActionModal({
                   }}
                 />
                 Do not send
-              </label>
+              </label> */}
             </div>
 
-            {sendEmail ? (
+            {/* {sendEmail ? (
               <div className="mt-3 space-y-2 border-t border-[var(--border)] pt-3">
                 <label className="flex items-center gap-1.5 text-xs">
                   <input
@@ -389,7 +389,7 @@ export function ActionModal({
                   Logged to the audit log and the borrower&apos;s email history.
                 </p>
               </div>
-            )}
+            )} */}
           </div>
         ) : null}
 
