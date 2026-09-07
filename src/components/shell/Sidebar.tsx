@@ -110,7 +110,7 @@ const NAV = [
    * submitted reviews is a view. Only the publish/reject buttons inside are
    * restricted to super_admin.
    */
-  { href: "/reviews", label: "Reviews", icon: Star },
+  // { href: "/reviews", label: "Reviews", icon: Star },
   {
     href: "/users",
     label: "Admin users",
