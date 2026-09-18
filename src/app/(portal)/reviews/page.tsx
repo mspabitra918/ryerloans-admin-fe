@@ -1,5 +1,11 @@
-import { ReviewsView } from "@/components/reviews/ReviewsView";
+// import { ReviewsView } from "@/components/reviews/ReviewsView";
+
+// export default function ReviewsPage() {
+//   return <ReviewsView />;
+// }
+
+import React from "react";
 
 export default function ReviewsPage() {
-  return <ReviewsView />;
+  return <div>DIV</div>;
 }
