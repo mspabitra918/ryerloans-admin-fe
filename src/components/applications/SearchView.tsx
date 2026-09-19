@@ -358,9 +358,9 @@ export function SearchView() {
 
       setData(result);
 
-      if (result.exact_match && result.results.length === 1) {
-        router.push(`/applications/${result.exact_match}`);
-      }
+      // if (result.exact_match && result.results.length === 1) {
+      //   router.push(`/applications/${result.exact_match}`);
+      // }
     } catch (caught) {
       setError(
         caught instanceof ApiError

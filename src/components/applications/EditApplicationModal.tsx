@@ -49,10 +49,57 @@ interface EditGroup {
 }
 
 const STATES = [
-  "AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA",
-  "KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ",
-  "NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT",
-  "VA","WA","WV","WI","WY","DC",
+  "AL",
+  "AK",
+  "AZ",
+  "AR",
+  "CA",
+  "CO",
+  "CT",
+  "DE",
+  "FL",
+  "GA",
+  "HI",
+  "ID",
+  "IL",
+  "IN",
+  "IA",
+  "KS",
+  "KY",
+  "LA",
+  "ME",
+  "MD",
+  "MA",
+  "MI",
+  "MN",
+  "MS",
+  "MO",
+  "MT",
+  "NE",
+  "NV",
+  "NH",
+  "NJ",
+  "NM",
+  "NY",
+  "NC",
+  "ND",
+  "OH",
+  "OK",
+  "OR",
+  "PA",
+  "RI",
+  "SC",
+  "SD",
+  "TN",
+  "TX",
+  "UT",
+  "VT",
+  "VA",
+  "WA",
+  "WV",
+  "WI",
+  "WY",
+  "DC",
 ];
 
 /**
@@ -68,9 +115,19 @@ const GROUPS: EditGroup[] = [
       { name: "first_name", label: "First name", visible: true },
       { name: "last_name", label: "Last name", visible: true },
       { name: "email", label: "Email", visible: true },
-      { name: "phone", label: "Phone", visible: true, hint: "Digits only are stored." },
+      {
+        name: "phone",
+        label: "Phone",
+        visible: true,
+        hint: "Digits only are stored.",
+      },
       { name: "dob", label: "Date of birth", kind: "date" },
-      { name: "dl_state", label: "Licence state", kind: "select", options: STATES },
+      {
+        name: "dl_state",
+        label: "Licence state",
+        kind: "select",
+        options: STATES,
+      },
       {
         name: "ssn",
         label: "SSN (replace)",
@@ -91,11 +148,21 @@ const GROUPS: EditGroup[] = [
       { name: "street_address", label: "Street address", visible: true },
       { name: "address_line_2", label: "Address line 2", visible: true },
       { name: "city", label: "City", visible: true },
-      { name: "state", label: "State", kind: "select", options: STATES, visible: true },
+      {
+        name: "state",
+        label: "State",
+        kind: "select",
+        options: STATES,
+        visible: true,
+      },
       { name: "zip", label: "ZIP", visible: true },
       { name: "years_at_address", label: "Years at address", kind: "number" },
       { name: "housing_status", label: "Housing status" },
-      { name: "monthly_housing_cost", label: "Monthly housing cost", kind: "number" },
+      {
+        name: "monthly_housing_cost",
+        label: "Monthly housing cost",
+        kind: "number",
+      },
     ],
   },
   {
@@ -105,11 +172,19 @@ const GROUPS: EditGroup[] = [
       { name: "employment_status", label: "Employment status" },
       { name: "employer_name", label: "Employer" },
       { name: "job_title", label: "Job title" },
-      { name: "employment_length_mo", label: "Months employed", kind: "number" },
+      {
+        name: "employment_length_mo",
+        label: "Months employed",
+        kind: "number",
+      },
       { name: "employer_phone", label: "Employer phone" },
       { name: "pay_frequency", label: "Pay frequency" },
       { name: "next_pay_date", label: "Next pay date", kind: "date" },
-      { name: "net_monthly_income", label: "Net monthly income", kind: "number" },
+      {
+        name: "net_monthly_income",
+        label: "Net monthly income",
+        kind: "number",
+      },
       { name: "income_source", label: "Income source" },
     ],
   },
@@ -127,7 +202,12 @@ const GROUPS: EditGroup[] = [
     panel: "banking",
     fields: [
       { name: "bank_name", label: "Bank name", visible: true },
-      { name: "account_type", label: "Account type", kind: "select", options: ["Checking", "Savings"] },
+      {
+        name: "account_type",
+        label: "Account type",
+        kind: "select",
+        options: ["Checking", "Savings"],
+      },
       { name: "account_age_months", label: "Account age" },
       { name: "current_balance_band", label: "Current balance band" },
       {
@@ -148,7 +228,12 @@ const GROUPS: EditGroup[] = [
     title: "Loan request",
     panel: "loan_request",
     fields: [
-      { name: "amount_requested", label: "Amount requested", kind: "number", visible: true },
+      {
+        name: "amount_requested",
+        label: "Amount requested",
+        kind: "number",
+        visible: true,
+      },
       { name: "loan_purpose", label: "Purpose", visible: true },
       { name: "loan_purpose_other", label: "Purpose detail" },
     ],
@@ -158,7 +243,12 @@ const GROUPS: EditGroup[] = [
 const ALL_FIELDS = GROUPS.flatMap((group) => group.fields);
 
 /** Encrypted fields arrive masked, so they start blank and mean "replace". */
-const REPLACE_ONLY = new Set(["ssn", "dl_number", "account_number", "routing_number"]);
+const REPLACE_ONLY = new Set([
+  "ssn",
+  "dl_number",
+  "account_number",
+  "routing_number",
+]);
 
 function initialValue(
   detail: ApplicationDetail,
@@ -288,7 +378,8 @@ export function EditApplicationModal({
 
       if (!result.borrower_visible_change) {
         toast.success(`${count} field${count === 1 ? "" : "s"} updated`, {
-          description: "No borrower-visible field changed, so no email was sent.",
+          description:
+            "No borrower-visible field changed, so no email was sent.",
         });
       } else if (result.email_sent) {
         toast.success(`${count} field${count === 1 ? "" : "s"} updated`, {
@@ -305,7 +396,9 @@ export function EditApplicationModal({
       onDone();
       onClose();
     } catch (caught) {
-      setError(caught instanceof ApiError ? caught.message : "The edit failed.");
+      setError(
+        caught instanceof ApiError ? caught.message : "The edit failed.",
+      );
     } finally {
       setBusy(false);
     }
@@ -472,7 +565,7 @@ export function EditApplicationModal({
         ) : null}
 
         {/* -------------------------------------------------- §8.4 email panel */}
-        <div className="rounded-lg border border-[var(--border)] p-3">
+        {/* <div className="rounded-lg border border-[var(--border)] p-3">
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-start gap-2">
               {willEmail && sendEmail ? (
@@ -537,9 +630,9 @@ export function EditApplicationModal({
               />
             </div>
           ) : null}
-        </div>
+        </div> */}
 
-        {changedSensitive.length === 0 ? (
+        {/* {changedSensitive.length === 0 ? (
           <div>
             <label htmlFor="edit-note" className="mb-1 block text-sm font-medium">
               Internal note (optional)
@@ -552,7 +645,7 @@ export function EditApplicationModal({
               placeholder="Recorded against the audit entry"
             />
           </div>
-        ) : null}
+        ) : null} */}
       </div>
     </Modal>
   );
